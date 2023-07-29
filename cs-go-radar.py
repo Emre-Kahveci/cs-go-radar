@@ -15,17 +15,17 @@ def radar() -> None:
     client = pymem.process.module_from_name(pm.process_handle, "client.dll").lpBaseOfDll # access client.dll
     
     while True:
-        local_player = pm.read_uint(client + offsets["localPlayer"])
+        localPlayer = pm.read_uint(client + offsets["localPlayer"])
 
         for i in range(1,64):
             entity = pm.read_uint(client + offsets["entityList"] + i * 0x10)
             
-            #if the entity is not empty and not local_player
-            if entity == 0 or entity == local_player:
+            #if the entity is not empty and not localPlayer
+            if entity == 0 or entity == localPlayer:
                 continue
 
-            #if entity and local_player are not on the same team
-            if pm.read_uint(entity + offsets["teamNum"]) == pm.read_uint(local_player + offsets["teamNum"]):
+            #if entity and localPlayer are not on the same team
+            if pm.read_uint(entity + offsets["teamNum"]) == pm.read_uint(localPlayer + offsets["teamNum"]):
                 continue
 
             pm.write_bool(entity + offsets["spotted"], True)
